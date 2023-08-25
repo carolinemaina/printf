@@ -31,9 +31,9 @@ int _printf(const char *format, ...)
 				default:
 					return (-1);
 			}
-		} else
+		} else if (format[i] == '\n')
 		{
-			store[s1++] = format[i];
+			store[s1++] = '\n';
 		}
 	}
 	va_end(character);
@@ -42,9 +42,6 @@ int _printf(const char *format, ...)
 	{
 		print_out(store[i]);
 	}
-
-	if (format[i] == '\n')
-		print_out('\n');
 
 	return (s1);
 }
