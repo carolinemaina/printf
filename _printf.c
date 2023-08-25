@@ -34,6 +34,9 @@ int _printf(const char *format, ...)
 		} else if (format[i] == '\n')
 		{
 			store[s1++] = '\n';
+		} else
+		{
+			store[s1++] = format[i];
 		}
 	}
 	va_end(character);
