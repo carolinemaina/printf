@@ -1,52 +1,50 @@
 #include "main.h"
-#include <stdarg.h>
 
 /**
  * _printf - printf implementation
  * @format: format specifiers
  * Return: printed output
  */
-
 int _printf(const char *format, ...)
 {
 	va_list character;
-	int s1 = 0, s2 = 0, i;
-	char store[1000], *ptr_string;
+	int s1 = 0, i;
+	char store[1000];
 
 	va_start(character, format);
-	if (format && format[s1] != '\0')
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (format[s1] == '%')
+		if (format[i] == '%')
 		{
-			s1++;
-			switch (format[s1])
+			i++;
+			switch (format[i])
 			{
 				case 'c':
-					{
-						store[s2] = (char)va_arg(character, int);
-						s2++;
-						break;
-					}
+					s1 += handle_c(&store[s1], va_arg(character, int));
+					break;
 				case 's':
-					{
-						ptr_string = va_arg(character, char*);
-						strcopy(&store[s2], ptr_string);
-						s2 += strleng(ptr_string);
-						break;
-					}
+					s1 += handle_s(&store[s1], va_arg(character, const char *));
+					break;
+				case '%':
+					store[s1++] = '%';
+					break;
+				default:
+					return (-1);
 			}
 		} else
 		{
-			return (-1);
+			store[s1++] = format[i];
 		}
-		s1++; }
+	}
 	va_end(character);
 
-	for (i = 0; i < s2; i++)
+	for (i = 0; i < s1; i++)
 	{
 		print_out(store[i]);
 	}
-	if (format[s1] == '\n')
+
+	if (format[i] == '\n')
 		print_out('\n');
-	return (s2);
+
+	return (s1);
 }
